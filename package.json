@@ -1,6 +1,6 @@
 {
   "name": "the-wall-digital-collectors-edition",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Discord bot implemented via Zapier that keeps track of the board games my friends and I play",
   "main": "index.js",
   "scripts": {
