@@ -1,0 +1,24 @@
+{
+  "name": "the-wall-digital-collectors-edition",
+  "version": "0.1.0",
+  "description": "A Discord bot implemented via Zapier that keeps track of the board games my friends and I play",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisdopuch/the-wall-digital-collectors-edition.git"
+  },
+  "keywords": [
+    "Zapier",
+    "Discord",
+    "Too Many Friends"
+  ],
+  "author": "Chris Dopuch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrisdopuch/the-wall-digital-collectors-edition/issues"
+  },
+  "homepage": "https://github.com/chrisdopuch/the-wall-digital-collectors-edition#readme"
+}
