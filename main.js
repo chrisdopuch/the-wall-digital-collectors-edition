@@ -18,7 +18,8 @@ function main(params, logger = console) {
     });
     results.date = date;
     const regex =
-      /Game:\s*(.*?)\s+Competitors:\s*((?:<@\d+>|[a-zA-Z0-9-' ]+)(?:\s*,\s*(?:<@\d+>|[a-zA-Z0-9-' ]+))*)(?:\s+Winners?:\s*((?:<@\d+>|[a-zA-Z0-9-' ]+)(?:\s*,\s*(?:<@\d+>|[a-zA-Z0-9-' ]+))*))?/;
+      /Game:\s*(.*?)\s+Competitors:\s*((?:<@\d+>|[a-zA-Z0-9-. ]+)(?:\s*,\s*(?:<@\d+>|[a-zA-Z0-9-. ]+))*)(?:\s+Winners?:\s*((?:<@\d+>|[a-zA-Z0-9-. ]+)(?:\s*,\s*(?:<@\d+>|[a-zA-Z0-9-. ]+))*))?/;
+
     const matches = inputMessage.match(regex);
 
     if (!matches) {

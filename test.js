@@ -27,6 +27,27 @@ describe("Testing main function", function () {
     });
   });
 
+  it("should parse competitors with periods in their name", function () {
+    const input = {
+      content:
+        "Game: Test\nCompetitors: Joe A., Bob D., Amie F.\nWinners: Bob D.",
+      mentions_username: "user1,user2,user3",
+      mentions_id: "1234,5678,9101",
+    };
+
+    const output = main(input, logger);
+
+    expect(output).to.deep.equal({
+      uuid: output.uuid,
+      date: output.date,
+      errors: [],
+      exception: null,
+      competitors: ["Joe A.", "Bob D.", "Amie F."],
+      gameName: "Test",
+      winners: ["Bob D."],
+    });
+  });
+
   it("should return an error if it fails to parse", function () {
     const input = {
       content: "Game: Test\nCompetitors:",
