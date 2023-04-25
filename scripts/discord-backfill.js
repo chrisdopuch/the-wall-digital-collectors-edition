@@ -1,24 +1,26 @@
 require("dotenv").config();
-const Discord = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const fs = require("fs");
 
 const TOKEN = process.env.DISCORD_TOKEN;
-const CHANNEL_ID = "the-wall-digital-collectors-edition";
+const CHANNEL_ID = "673050858883252245";
 const BEFORE_DATE = "2023-03-25T00:00:00.000Z"; // the launch of the new bot, so we don't get any duplicates
 
-const client = new Discord.Client();
-const channel = client.channels.cache.get(CHANNEL_ID);
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
-});
-
-// Authenticate the client and fetch messages in batches
-client.login(TOKEN).then(() => {
+  const channel = client.channels.cache.get(CHANNEL_ID);
   const messages = [];
-  fetchMessages(null);
+  fetchMessages(channel, null);
 
-  function fetchMessages(before) {
+  function fetchMessages(channel, before) {
     channel.messages
       .fetch({
         limit: 100,
@@ -26,12 +28,12 @@ client.login(TOKEN).then(() => {
       })
       .then((fetchedMessages) => {
         const messagesBeforeDate = fetchedMessages.filter((message) => {
-          return message.createdAt < new Date(BEFORE_DATE);
+          return new Date(message.createdTimestamp) < new Date(BEFORE_DATE);
         });
-        messages.push(...messagesBeforeDate.array());
+        messages.push(...messagesBeforeDate);
 
         if (fetchedMessages.size === 100) {
-          fetchMessages(fetchedMessages.last().id);
+          fetchMessages(channel, fetchedMessages.last().id);
         } else {
           console.log(
             `Fetched ${messages.length} messages before ${BEFORE_DATE}`
@@ -46,14 +48,23 @@ client.login(TOKEN).then(() => {
   }
 });
 
+// Authenticate the client and fetch messages in batches
+client.login(TOKEN);
+
 // Save the fetched messages to a file
 function saveMessagesToFile(messages) {
-  const data = messages.map((message) => {
+  const data = messages.map(([_, message]) => {
+    const { id, content, author, createdAt } = message;
+    const users = message.mentions.users.map((user) => ({
+      username: user.username,
+      id: user.id,
+    }));
     return {
-      id: message.id,
-      content: message.content,
-      author: message.author.username,
-      createdAt: message.createdAt,
+      id: id,
+      content: content,
+      author: author.username,
+      createdAt: createdAt,
+      users: users,
     };
   });
   fs.writeFile("messages.json", JSON.stringify(data), (err) => {
